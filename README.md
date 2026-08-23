@@ -8,6 +8,12 @@ A local-first verification layer for autonomous onchain transactions.
 
 Blockchain can verify that a transaction is valid. VETA verifies whether that transaction matches the evidence and authority that justified it.
 
+**Public demo:** https://veta-smoky.vercel.app
+
+**Demo video:** `DEMO_VIDEO_URL` (final upload pending)
+
+The public Vercel deployment is a judge-facing demo of recorded, reproducible VETA scenarios. Real QVAC inference runs locally and is not executed by Vercel or by the judge's browser.
+
 ## What problem does VETA solve?
 
 Autonomous agents can misunderstand instructions, call tools incorrectly, or be manipulated by hostile text. A valid blockchain transaction can still send the wrong asset, amount, or recipient. VETA adds a fail-closed verification boundary between model interpretation and transaction authorization.
@@ -71,6 +77,20 @@ The checked-in `qvac.config.json` defines the local runtime:
 | Context | 4096 |
 
 QVAC handles semantic interpretation and tool orchestration. **QVAC does not approve transactions. Authorization is deterministic.** No cloud model is used by the product runtime.
+
+### Local runtime verification
+
+On August 23, 2026, `GET http://127.0.0.1:11434/v1/models` returned `veta-local`. Three fresh structured extraction calls all passed schema validation. One fresh real-QVAC orchestration run produced three valid structured actions out of five responses, then failed closed to `REVIEW` after malformed output and an incomplete tool chain. This observed failure is reported rather than hidden.
+
+| Runtime setting | Value |
+|---|---|
+| CPU | AMD Ryzen 7 7730U with Radeon Graphics |
+| RAM | 13.8 GiB |
+| OS | Microsoft Windows 11 Pro, 64-bit |
+| Node used for final local validation | `v24.15.0` |
+| Local endpoint | `http://127.0.0.1:11434/v1` |
+
+Fresh M9 extraction latency over three calls was 5.534 s minimum, 5.583 s median, 6.575 s mean, and 8.609 s maximum. The primary M7 artifact reports 29.817 s mean latency across its 10 real-QVAC scenarios. Real QVAC latency is hardware, model, and runtime dependent. See [`docs/runtime-environment.md`](docs/runtime-environment.md).
 
 ## Deterministic security boundary
 
@@ -142,7 +162,7 @@ All eight safe controls reached `APPROVE`. The same two real-QVAC authority atta
 
 ## Current status
 
-M0 through M7 are complete. M8 is next. See [`docs/status.md`](docs/status.md) for milestone purposes and status.
+M0 through M9 pass. The repository, local runtime evidence, live Sepolia smoke test, public demo, and submission documents are complete. See [`docs/status.md`](docs/status.md).
 
 ## Quickstart
 
@@ -155,7 +175,7 @@ npm ci
 npm run check
 ```
 
-Run the development server without changing the current placeholder UI:
+Run the judge-facing demo locally:
 
 ```bash
 npm run dev
@@ -186,7 +206,7 @@ npm run veta:m7
 ## Repository structure
 
 ```text
-app/                  Current Next.js shell; M8 UI is not implemented
+app/                  Judge-facing verification, reliability, and architecture UI
 artifacts/            Generated benchmark evidence and methodology notes
 docs/                 Architecture, methodology, reality check, status
 scripts/              Milestone demonstrations and benchmark entrypoints
@@ -198,6 +218,8 @@ src/qvac/             Local QVAC extraction client and schemas
 src/safety/           Deterministic M3 Safety Kernel
 src/web3/             Viem ERC-20 decoding and read-only RPC integration
 ```
+
+The UI loads the versioned M7 artifact and does not require QVAC or RPC access. Local QVAC status is checked only when the browser itself is on localhost.
 
 ## Environment variables
 
@@ -229,9 +251,38 @@ GitHub Actions runs `npm ci`, tests, TypeScript, and production build. It delibe
 - Only ERC-20 `transfer(address,uint256)` on EVM is decoded.
 - No signing, wallet execution, transaction broadcast, or private-key handling exists.
 - Real QVAC behavior can vary by model/runtime/hardware.
-- M6 is adversarial and unsafe-only; safe controls have not yet been consolidated into M7 metrics.
+- The M7 report measures a fixed 36-scenario fixture set; it is not a production reliability claim.
+- M6 remains an unsafe-only historical benchmark; M7 is the separate balanced benchmark.
+- Real-QVAC `B1` and `B2` degraded from expected `BLOCK` to `REVIEW` after incomplete orchestration.
+- A fresh M9 safe orchestration probe also degraded to `REVIEW`; malformed model output prevented a complete tool chain.
+- Public Vercel demonstrates recorded scenarios and does not run the local QVAC model or live RPC workflows.
+- Preview deployments are Vercel-auth protected; the production alias is public.
 - This is a hackathon security prototype, not a production compliance system.
-- The verification UI and reliability lab are reserved for M8.
+
+## Submission evidence
+
+The links below are immutable implementation permalinks for the deployed code commit `72f4aae90dbc2f0bafd4df5732698233bce2259a`.
+
+### QVAC and orchestration
+
+- [QVAC structured extraction](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/qvac/extract-payment.ts#L54-L139)
+- [QVAC action orchestration](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/agent/orchestrator.ts#L45-L200)
+- [Structured action schema](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/agent/action-schema.ts#L5-L63)
+- [Tool registry](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/agent/tool-registry.ts#L23-L75)
+- [Workflow guard](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/agent/workflow-guard.ts#L4-L38)
+- [Real-QVAC benchmark](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/scripts/m4-benchmark.ts#L61-L151)
+- [M6/M7 real-QVAC adversarial runner](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/adversarial/runner.ts#L58-L184)
+
+### Blockchain and safety
+
+- [EVM calldata decoder](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/web3/decode-transfer.ts#L22-L53)
+- [Sepolia transaction retrieval](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/web3/get-onchain-transaction.ts#L21-L67)
+- [T0 provenance creation](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/web3/build-onchain-evidence.ts#L11-L58)
+- [Deterministic Safety Kernel](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/safety/safety-kernel.ts#L56-L188)
+- [Trust and Authority resolver](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/authority/resolver.ts#L33-L71)
+- [Authority-to-Safety adapter](https://github.com/vincesmandres/veta/blob/72f4aae90dbc2f0bafd4df5732698233bce2259a/src/authority/safety-adapter.ts#L6-L17)
+
+Additional submission material: [`docs/demo-script.md`](docs/demo-script.md), [`docs/submission-checklist.md`](docs/submission-checklist.md), and [`artifacts/m7-balanced-reliability.md`](artifacts/m7-balanced-reliability.md).
 
 ## Hackathon track
 
