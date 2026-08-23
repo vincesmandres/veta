@@ -1,4 +1,14 @@
+import { FinalCta, HowVetaWorks, SepoliaProof } from "../../components/veta/pitch-sections";
 import { SiteHeader } from "../../components/veta/site-header";
-import { ArchitecturePage } from "../../components/veta/architecture-page";
 
-export default function ArchitectureRoute() { return <main className="app-shell"><SiteHeader active="architecture" /><div className="content-shell"><ArchitecturePage /></div></main>; }
+export default function ArchitecturePage() {
+  return (
+    <main className="page-shell">
+      <SiteHeader active="architecture" />
+      <HowVetaWorks />
+      <SepoliaProof />
+      <FinalCta />
+      <footer className="footer">VETA / INTERPRET WITH AI / VERIFY WITH EVIDENCE / TRUST WITH CODE</footer>
+    </main>
+  );
+}

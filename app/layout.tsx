@@ -14,8 +14,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://veta-smoky.vercel.app"),
   title: "VETA | Verify before execution",
   description: "A local-first verification layer for autonomous onchain transactions.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "VETA | Verify before execution",
+    description: "Interpret with AI. Verify with evidence. Trust with code.",
+    url: "/",
+    siteName: "VETA",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
