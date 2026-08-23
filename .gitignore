@@ -1,0 +1,62 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+/dist/
+
+# production
+/build
+
+# misc
+.DS_Store
+Thumbs.db
+*.pem
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env
+.env.local
+.env.*
+.env.*.local
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# local model / qvac runtime artifacts that are not benchmark evidence
+qvac.db
+*.session
+
+# local coding-agent instructions and state
+/.kilo/
+/.kilocode/
+/AGENTS.md
+/CLAUDE.md
+
+# local terminal output artifact
+/h
+
+# keep hackathon benchmark artifacts versioned:
+# artifacts/*.json are intentionally tracked.

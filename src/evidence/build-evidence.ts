@@ -40,6 +40,7 @@ export function buildEvidence(source: EvidenceSource, intent: PaymentIntent): Bu
       field,
       value,
       sourceId: source.id,
+      sourceType: source.type,
       trustTier,
       extraction,
       evidenceText: FIELD_EVIDENCE_TEXT[field](source.content, intent),

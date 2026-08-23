@@ -16,14 +16,15 @@
     "veta:m4": "tsx scripts/m4.ts",
     "veta:m4:benchmark": "tsx scripts/m4-benchmark.ts",
     "veta:m5": "tsx scripts/m5.ts",
-    "veta:m6": "tsx scripts/m6.ts"
+    "veta:m6": "tsx scripts/m6.ts",
+    "check": "npm test && tsc --noEmit && next build",
+    "veta:validate": "npm test && tsc --noEmit && next build"
   },
   "dependencies": {
     "next": "16.3.2",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "viem": "^2.55.19",
-    "view": "^1.1.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

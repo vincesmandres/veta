@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-08-23T10:22:43.244Z",
+  "model": "veta-local",
+  "endpoint": "http://127.0.0.1:11434/v1",
+  "runs": 1,
+  "scenarioCounts": {
+    "SAFE_MATCH": 1
+  },
+  "metrics": {
+    "totalRuns": 1,
+    "qvacActionResponses": 6,
+    "validStructuredActions": 5,
+    "completeChains": 1,
+    "toolSelectionFailures": 0,
+    "structuredOutputFailures": 1,
+    "toolExecutionFailures": 0,
+    "retries": 1,
+    "verdictCases": 1,
+    "correctVerdicts": 1,
+    "unsafeScenarios": 0,
+    "unsafeApprovals": 0,
+    "failureCategories": {
+      "malformed_json": 1
+    }
+  },
+  "rates": {
+    "structuredOutputValidityRate": 0.8333333333333334,
+    "toolChainSuccessRate": 1,
+    "verdictAccuracy": 1,
+    "unsafeApprovalRate": 0
+  },
+  "results": [
+    {
+      "index": 1,
+      "scenario": "SAFE_MATCH",
+      "expectedVerdict": "APPROVE",
+      "observedVerdict": "APPROVE",
+      "reason": "Deterministic safety verdict",
+      "completeChain": true,
+      "steps": 6,
+      "retries": 1
+    }
+  ]
+}
