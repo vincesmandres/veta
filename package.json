@@ -9,12 +9,15 @@
     "lint": "eslint",
     "test": "vitest run",
     "veta:m0": "tsx scripts/m0.ts",
-    "veta:m1": "tsx scripts/m1.ts"
+    "veta:m1": "tsx scripts/m1.ts",
+    "veta:m2": "tsx scripts/m2.ts",
+    "veta:m3": "tsx scripts/m3.ts"
   },
   "dependencies": {
     "next": "16.3.2",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "viem": "^2.55.19",
     "view": "^1.1.1",
     "zod": "^4.4.3"
   },

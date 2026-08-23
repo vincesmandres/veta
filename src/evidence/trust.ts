@@ -5,6 +5,7 @@ export const TRUST_TIERS = ["T0_ONCHAIN", "T1_AUTHORITY", "T2_SUPPORTING", "T3_U
 export type TrustTier = (typeof TRUST_TIERS)[number];
 
 const TRUST_TIER_BY_SOURCE: Record<EvidenceSourceType, TrustTier> = {
+  evm_transaction: "T0_ONCHAIN",
   payment_request: "T1_AUTHORITY",
   policy: "T1_AUTHORITY",
   vendor_registry: "T1_AUTHORITY",

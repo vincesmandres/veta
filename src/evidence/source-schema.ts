@@ -6,6 +6,7 @@ export const evidenceSourceTypeSchema = z.enum([
   "vendor_registry",
   "invoice",
   "free_text",
+  "evm_transaction",
 ]);
 
 export const evidenceSourceSchema = z.object({

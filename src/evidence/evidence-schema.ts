@@ -6,6 +6,8 @@ export const evidenceFieldSchema = z.enum([
   "amount",
   "asset",
   "counterparty",
+  "recipient",
+  "functionName",
 ]);
 
 export const extractionStateSchema = z.enum(["explicit", "derived", "missing"]);
