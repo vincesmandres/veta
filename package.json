@@ -1,5 +1,5 @@
 {
-  "name": "temp-veta",
+  "name": "veta",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "veta:m0": "tsx scripts/m0.ts"
+    "veta:m0": "tsx scripts/m0.ts",
+    "veta:m1": "tsx scripts/m1.ts"
   },
   "dependencies": {
     "next": "16.3.2",
@@ -25,8 +26,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5",
-    "vitest": "^4.1.11",
-    "tsx": "^4.23.12"
+    "vitest": "^4.1.11"
   }
 }

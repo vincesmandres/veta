@@ -26,7 +26,11 @@ describe("payment extraction validation", () => {
     expect(paymentIntentSchema.safeParse({ operation: "payment", invoiceId: null, amount: -1, asset: "USDT", counterparty: "ACME" }).success).toBe(false);
   });
 
-  it("reports unavailable QVAC explicitly", async () => {
-    await expect(extractPayment("input", { fetchImpl: vi.fn().mockRejectedValue(new Error("connect refused")) })).rejects.toMatchObject({ code: "QVAC_UNAVAILABLE" });
+  it("reports fetch connection failures as unavailable", async () => {
+    await expect(extractPayment("input", { fetchImpl: vi.fn().mockRejectedValue(new TypeError("connect refused")) })).rejects.toMatchObject({ code: "QVAC_UNAVAILABLE" });
+  });
+
+  it("preserves unexpected request errors", async () => {
+    await expect(extractPayment("input", { fetchImpl: vi.fn().mockRejectedValue(new Error("programming bug")) })).rejects.toMatchObject({ code: "UNEXPECTED_QVAC_ERROR", message: "programming bug" });
   });
 });

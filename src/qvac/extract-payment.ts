@@ -41,6 +41,16 @@ type ChatCompletionResponse = {
   choices?: Array<{ message?: { content?: unknown } }>;
 };
 
+function debugQvac(label: string, value: unknown): void {
+  if (process.env.VETA_DEBUG_QVAC === "1") {
+    console.error(`[QVAC DEBUG] ${label}:`, typeof value === "string" ? value : JSON.stringify(value, null, 2));
+  }
+}
+
+function isFetchConnectionError(error: unknown): boolean {
+  return error instanceof TypeError;
+}
+
 export async function extractPayment(
   input: string,
   options: ExtractOptions = {},
@@ -50,9 +60,10 @@ export async function extractPayment(
   const fetchImpl = options.fetchImpl ?? fetch;
   const startedAt = Date.now();
   let raw = "";
+  let response: Response;
 
   try {
-    const response = await fetchImpl(`${baseUrl}/chat/completions`, {
+    response = await fetchImpl(`${baseUrl}/chat/completions`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -66,66 +77,83 @@ export async function extractPayment(
         ],
       }),
     });
-
-    if (!response.ok) {
-      throw new QvacError("QVAC_HTTP_ERROR", `QVAC returned HTTP ${response.status}: ${response.statusText || "request failed"}`);
-    }
-
-    let payload: ChatCompletionResponse;
-    try {
-      payload = await response.json() as ChatCompletionResponse;
-    } catch {
-      throw new QvacError("QVAC_HTTP_ERROR", "QVAC returned an invalid JSON response");
-    }
-
-    if (typeof payload.choices?.[0]?.message?.content !== "string") {
-      throw new QvacError("QVAC_EMPTY_RESPONSE", "QVAC returned an empty model response");
-    }
-    raw = payload.choices[0].message.content;
-    if (!raw.trim()) {
-      throw new QvacError("QVAC_EMPTY_RESPONSE", "QVAC returned an empty model response");
-    }
-
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      throw new QvacError("MALFORMED_JSON", "QVAC returned malformed JSON");
-    }
-
-    const validated = paymentIntentSchema.safeParse(parsed);
-    if (!validated.success) {
-      const details = validated.error.issues
-        .map((issue) => `${issue.path.join(".")} ${issue.message}`)
-        .join("; ");
-      throw new QvacError("SCHEMA_VALIDATION_FAILED", `Payment intent failed validation: ${details}`);
-    }
-
-    return {
-      paymentIntent: validated.data,
-      raw,
-      observation: {
-        model,
-        input,
-        latencyMs: Date.now() - startedAt,
-        schemaResult: "PASS",
-        success: true,
-        errorReason: null,
-      },
-    };
   } catch (error) {
-    const qvacError = error instanceof QvacError
-      ? error
-      : new QvacError("QVAC_UNAVAILABLE", "QVAC local server is unavailable");
-    const observation: InferenceObservation = {
+    if (isFetchConnectionError(error)) {
+      throwInferenceError(new QvacError("QVAC_UNAVAILABLE", "QVAC local server is unavailable"), model, input, startedAt, raw);
+    }
+    throwInferenceError(new QvacError("UNEXPECTED_QVAC_ERROR", error instanceof Error ? error.message : "Unexpected QVAC request error"), model, input, startedAt, raw);
+  }
+
+  debugQvac("HTTP status", response.status);
+
+  if (!response.ok) {
+    throwInferenceError(new QvacError("QVAC_HTTP_ERROR", `QVAC returned HTTP ${response.status}: ${response.statusText || "request failed"}`), model, input, startedAt, raw);
+  }
+
+  let payload: ChatCompletionResponse;
+  try {
+    payload = await response.json() as ChatCompletionResponse;
+  } catch (error) {
+    throwInferenceError(new QvacError("QVAC_HTTP_ERROR", error instanceof Error ? `QVAC returned an invalid JSON response: ${error.message}` : "QVAC returned an invalid JSON response"), model, input, startedAt, raw);
+  }
+
+  debugQvac("response payload", payload);
+  debugQvac("choices[0]", payload.choices?.[0]);
+  debugQvac("message", payload.choices?.[0]?.message);
+  debugQvac("message.content", payload.choices?.[0]?.message?.content);
+
+  if (typeof payload.choices?.[0]?.message?.content !== "string") {
+    throwInferenceError(new QvacError("QVAC_EMPTY_RESPONSE", "QVAC returned an empty model response"), model, input, startedAt, raw);
+  }
+  raw = payload.choices[0].message.content;
+  if (!raw.trim()) {
+    throwInferenceError(new QvacError("QVAC_EMPTY_RESPONSE", "QVAC returned an empty model response"), model, input, startedAt, raw);
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throwInferenceError(new QvacError("MALFORMED_JSON", "QVAC returned malformed JSON"), model, input, startedAt, raw);
+  }
+
+  const validated = paymentIntentSchema.safeParse(parsed);
+  if (!validated.success) {
+    const details = validated.error.issues
+      .map((issue) => `${issue.path.join(".")} ${issue.message}`)
+      .join("; ");
+    throwInferenceError(new QvacError("SCHEMA_VALIDATION_FAILED", `Payment intent failed validation: ${details}`), model, input, startedAt, raw);
+  }
+
+  return {
+    paymentIntent: validated.data,
+    raw,
+    observation: {
       model,
       input,
       latencyMs: Date.now() - startedAt,
-      schemaResult: "FAIL",
-      success: false,
-      errorReason: qvacError.code,
-    };
-    console.error(`${qvacError.code}: ${qvacError.message}`);
-    throw Object.assign(qvacError, { observation, raw });
-  }
+      schemaResult: "PASS",
+      success: true,
+      errorReason: null,
+    },
+  };
+}
+
+function throwInferenceError(
+  error: QvacError,
+  model: string,
+  input: string,
+  startedAt: number,
+  raw: string,
+): never {
+  const observation: InferenceObservation = {
+    model,
+    input,
+    latencyMs: Date.now() - startedAt,
+    schemaResult: "FAIL",
+    success: false,
+    errorReason: error.code,
+  };
+  console.error(`${error.code}: ${error.message}`);
+  throw Object.assign(error, { observation, raw });
 }
