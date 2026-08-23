@@ -17,6 +17,7 @@
     "veta:m4:benchmark": "tsx scripts/m4-benchmark.ts",
     "veta:m5": "tsx scripts/m5.ts",
     "veta:m6": "tsx scripts/m6.ts",
+    "veta:m7": "tsx scripts/m7.ts",
     "check": "npm test && tsc --noEmit && next build",
     "veta:validate": "npm test && tsc --noEmit && next build"
   },

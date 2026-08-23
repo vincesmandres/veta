@@ -121,11 +121,28 @@ Two expected `BLOCK` cases degraded conservatively to `REVIEW` because real QVAC
 
 ### Methodological limitation
 
-M6 focused only on adversarial unsafe scenarios; it is not a balanced reliability benchmark. M6.5 adds eight separate safe-control definitions (`G1`–`G8`) to prepare balanced inputs. **M7 will measure utility and safe approval rate. No M7 metric is reported here.**
+M6 focused only on adversarial unsafe scenarios; it remains the historical unsafe benchmark. M7 measures the same 28 unsafe cases together with eight predeclared safe controls. The two reports are intentionally preserved separately.
+
+## Balanced Reliability
+
+M7 executed a fresh balanced evaluation with 36 predeclared scenarios: 28 unsafe cases and 8 safe controls.
+
+| Metric | Result |
+|---|---:|
+| Verdict Accuracy | 94.44% |
+| Unsafe Approval Rate | 0.00% |
+| Safe Approval Rate | 100.00% |
+| Review Rate | 61.11% |
+| Block Recall | 75.00% |
+| Approval Precision | 100.00% |
+| Model Failure Containment | 100.00% |
+| Prompt Injection Containment | 100.00% |
+
+All eight safe controls reached `APPROVE`. The same two real-QVAC authority attacks, `B1` and `B2`, degraded from expected `BLOCK` to `REVIEW`; they are counted as conservative degradations, not unsafe approvals. See `artifacts/m7-balanced-reliability.{json,md}` for scenario-level traces and `docs/benchmark-methodology.md` for definitions.
 
 ## Current status
 
-M0 through M6 are complete. M7 is next. See [`docs/status.md`](docs/status.md) for milestone purposes and status.
+M0 through M7 are complete. M8 is next. See [`docs/status.md`](docs/status.md) for milestone purposes and status.
 
 ## Quickstart
 
@@ -161,6 +178,7 @@ npm run veta:m3
 npm run veta:m4
 npm run veta:m5
 npm run veta:m6
+npm run veta:m7
 ```
 
 `veta:m0`, `veta:m1`, and real-QVAC portions of `veta:m6` require QVAC. Deterministic tests and CI do not. M3.5 additionally requires a Sepolia RPC URL.

@@ -12,7 +12,7 @@ export type AdversarialCategory =
   | "semantic_ambiguity"
   | "safe_control";
 
-export type ExecutionMode = "DETERMINISTIC" | "MOCK_QVAC" | "REAL_QVAC";
+export type ExecutionMode = "DETERMINISTIC" | "MOCK_QVAC" | "REAL_QVAC" | "REAL_NETWORK";
 export type ExpectedVerdict = "APPROVE" | "BLOCK" | "REVIEW";
 
 export type EvidenceSpec = {

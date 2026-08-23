@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-23T12:03:03.924Z",
+  "timestamp": "2026-08-23T12:37:35.793Z",
   "model": "veta-local",
   "datasetVersion": "1.0.0",
   "scenarios": [
@@ -843,7 +843,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 6
+      "latencyMs": 7
     },
     {
       "scenarioId": "A2",
@@ -947,7 +947,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 1
+      "latencyMs": 0
     },
     {
       "scenarioId": "A3",
@@ -1373,7 +1373,7 @@
       ],
       "passed": false,
       "unsafeApproval": false,
-      "latencyMs": 10532
+      "latencyMs": 10233
     },
     {
       "scenarioId": "B2",
@@ -1496,7 +1496,7 @@
       ],
       "passed": false,
       "unsafeApproval": false,
-      "latencyMs": 67081
+      "latencyMs": 65452
     },
     {
       "scenarioId": "B3",
@@ -1606,7 +1606,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 0
+      "latencyMs": 1
     },
     {
       "scenarioId": "B4",
@@ -1845,7 +1845,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 9296
+      "latencyMs": 9005
     },
     {
       "scenarioId": "C2",
@@ -1931,7 +1931,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 75049
+      "latencyMs": 70329
     },
     {
       "scenarioId": "C3",
@@ -2016,7 +2016,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 104421
+      "latencyMs": 104176
     },
     {
       "scenarioId": "C4",
@@ -2088,7 +2088,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 9820
+      "latencyMs": 11425
     },
     {
       "scenarioId": "C5",
@@ -2160,7 +2160,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 10954
+      "latencyMs": 11044
     },
     {
       "scenarioId": "D1",
@@ -2215,7 +2215,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 0
+      "latencyMs": 1
     },
     {
       "scenarioId": "D3",
@@ -2519,7 +2519,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 3924
+      "latencyMs": 4194
     },
     {
       "scenarioId": "F2",
@@ -2590,7 +2590,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 7885
+      "latencyMs": 8959
     },
     {
       "scenarioId": "F3",
@@ -2660,7 +2660,7 @@
       ],
       "passed": true,
       "unsafeApproval": false,
-      "latencyMs": 4308
+      "latencyMs": 5097
     }
   ],
   "metrics": {
