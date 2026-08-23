@@ -1,7 +1,8 @@
 import type { EvidenceNode } from "../evidence/evidence-schema";
 import { getOnchainTransaction, type RawOnchainTransaction } from "../web3/get-onchain-transaction";
 import { decodeTransfer } from "../web3/decode-transfer";
-import { runSafetyKernel } from "../safety/safety-kernel";
+import { buildOnchainEvidence } from "../web3/build-onchain-evidence";
+import { verifyWithAuthority } from "../authority";
 import {
   decodeTransactionArgsSchema,
   getEvidenceArgsSchema,
@@ -41,6 +42,11 @@ export async function executeTool(
       case "decode_transaction": {
         const { transaction } = decodeTransactionArgsSchema.parse(arguments_);
         const decoded = decodeTransfer(transaction);
+        const onchainEvidence = buildOnchainEvidence(decoded, {
+          transactionHash: transaction.id,
+          contractAddress: transaction.tokenAddress,
+          network: "sepolia",
+        });
         return {
           ok: true,
           data: {
@@ -49,13 +55,14 @@ export async function executeTool(
             amountRaw: decoded.amountRaw.toString(),
             amountFormatted: decoded.amountFormatted,
             asset: decoded.asset,
+            onchainEvidence,
           },
         };
       }
       case "verify_transaction": {
         const { authorityEvidence, onchainEvidence } = verifyTransactionArgsSchema.parse(arguments_);
-        const result = runSafetyKernel([...authorityEvidence, ...onchainEvidence]);
-        return { ok: true, data: result };
+        const result = verifyWithAuthority([...authorityEvidence, ...onchainEvidence]);
+        return { ok: true, data: result.safety };
       }
     }
   } catch (error) {

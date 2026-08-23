@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TRUST_TIERS } from "./trust";
+import { evidenceSourceTypeSchema } from "./source-schema";
 
 export const evidenceFieldSchema = z.enum([
   "invoiceId",
@@ -19,6 +20,7 @@ export const evidenceNodeSchema = z.object({
   field: evidenceFieldSchema,
   value: z.union([z.string(), z.number()]).nullable(),
   sourceId: z.string().trim().min(1),
+  sourceType: evidenceSourceTypeSchema.optional(),
   trustTier: trustTierSchema,
   extraction: extractionStateSchema,
   evidenceText: z.string().trim().min(1).optional(),

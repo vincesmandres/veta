@@ -149,16 +149,22 @@ describe("M4 metrics", () => {
   it("calculates reliability rates from observed counts", () => {
     const rates = calculateMetrics({
       totalRuns: 10,
+      qvacActionResponses: 10,
+      validStructuredActions: 8,
       completeChains: 8,
       toolSelectionFailures: 1,
       structuredOutputFailures: 2,
       toolExecutionFailures: 1,
       retries: 3,
+      verdictCases: 10,
+      correctVerdicts: 9,
       unsafeScenarios: 5,
       unsafeApprovals: 1,
+      failureCategories: {},
     });
     expect(rates.toolChainSuccessRate).toBe(0.8);
     expect(rates.structuredOutputValidityRate).toBe(0.8);
+    expect(rates.verdictAccuracy).toBe(0.9);
     expect(rates.unsafeApprovalRate).toBe(0.2);
   });
 });

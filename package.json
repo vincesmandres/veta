@@ -14,7 +14,8 @@
     "veta:m3": "tsx scripts/m3.ts",
     "veta:m3.5": "tsx scripts/m35.ts",
     "veta:m4": "tsx scripts/m4.ts",
-    "veta:m4:benchmark": "tsx scripts/m4-benchmark.ts"
+    "veta:m4:benchmark": "tsx scripts/m4-benchmark.ts",
+    "veta:m5": "tsx scripts/m5.ts"
   },
   "dependencies": {
     "next": "16.3.2",

@@ -19,6 +19,7 @@ export function buildOnchainEvidence(
 ): EvidenceNode[] {
   const base: Omit<EvidenceNode, "id" | "field" | "value" | "evidenceText"> & { evidenceText?: string } = {
     sourceId: decoded.sourceId,
+    sourceType: "evm_transaction",
     trustTier: ONCHAIN_TIER,
     extraction: "explicit" as const,
   };
