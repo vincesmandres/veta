@@ -23,7 +23,7 @@ code, .mono { font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, m
 .mode-separator { height: 16px; width: 1px; margin-left: 5px; background: var(--line); }
 .health-line { color: var(--muted); }
 .health-dot.checking { background: var(--amber); }
-.health-dot.offline { background: #9ba5a4; }
+.health-dot.offline, .health-dot.not-local { background: #9ba5a4; }
 .live-note { margin-left: auto; color: #8b9695; font-size: 10px; }
 .hero-copy { padding: 74px 0 58px; display: flex; justify-content: space-between; align-items: end; }
 .kicker, .eyebrow, .section-label { margin: 0; color: var(--green); font-family: var(--font-geist-mono), monospace; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
