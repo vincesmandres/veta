@@ -29,6 +29,7 @@ export function checkWorkflowGuard(result: OrchestratorResult): OrchestratorResu
     return { ...result, finalVerdict: "APPROVE", reason: result.reason || "All verification checks passed" };
   }
   if (result.reason === "TOOL_CHAIN_LIMIT_EXCEEDED") return result;
+  if (result.reason === "TOOL_ORCHESTRATION_FAILED") return result;
   return {
     ...result,
     finalVerdict: "REVIEW",

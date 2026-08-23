@@ -189,7 +189,7 @@ export async function runAgent(task: string, options: { evidenceStore?: Evidence
   }
 
   const exceededLimit = context.step >= maxSteps;
-  const hasOrchestrationFailure = steps.some((step) => step.error?.includes("UNKNOWN_TOOL") || step.error?.includes("Invalid agent action") || step.error?.includes("QVAC_"));
+  const hasOrchestrationFailure = steps.some((step) => step.validation === "FAIL");
   let finalVerdict: "APPROVE" | "BLOCK" | "REVIEW";
   let reason: string;
   if (verificationPerformed && verificationVerdict) { finalVerdict = verificationVerdict; reason = verificationReasons.length > 0 ? verificationReasons.join(", ") : "Deterministic safety verdict"; }
