@@ -1,41 +1,47 @@
-# VETA
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-**Verificación de Evidencia y Transacciones Autónomas**
+## Getting Started
 
-VETA is a local-first security layer for autonomous financial operations.
+First, run the development server:
 
-It verifies that an onchain transaction is backed by trustworthy evidence before it can be approved.
-
-> **Interpret with AI. Verify with evidence. Trust with code.**
-
-```mermaid
-flowchart TD
-    A[Intención Humana] --> D[QVAC Local Agent]
-    B[Evidencia y Política] --> D
-    C[Transacción Onchain] --> E[Web3 Decoder]
-    D --> F[VETA]
-    E --> F
-    F --> G[Trust Engine]
-    G --> H[Deterministic Safety Gate]
-    H -->|Valid| I[APPROVE]
-    H -->|Unsafe| J[BLOCK]
-    H -->|Incomplete| K[REVIEW]
+```bash
+npm run dev
+# or
+npm run dev
 ```
 
-## Core idea
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Small local models can fail. VETA does **not** trust the model to authorize financial actions.
+This project uses `next/font` to automatically optimize and load Geist, a font family from Vercel.
 
-- **QVAC** interprets intent and orchestrates tools locally.
-- **Viem** reads and decodes real EVM transaction data.
-- **Zod** enforces structured evidence.
-- A deterministic kernel validates recipient, amount, asset, policy, trust level and evidence completeness.
-- Adversarial tests measure tool reliability and **unsafe approval rate**.
+## Learn More
 
-## Hackathon target
+To learn more about Next.js, take a look at the [Next.js documentation](https://nextjs.org/docs).
 
-**QVAC Track 2 — Small models, hard tasks: tool use & reliability.**
+## Deploy on Vercel
 
-The MVP proves one thing:
+The easiest way to deploy this project is through [Vercel](https://vercel.com/new).
 
-> A local model may fail, while the financial system still fails closed.
+## M3.5 Reality Check
+
+The read-only reality check fetches an external Sepolia transaction through viem, reuses the M2 ERC-20 decoder, and sends T0 evidence through the M3 Safety Kernel.
+
+```powershell
+$env:VETA_RPC_URL="https://your-sepolia-rpc.example"
+$env:VETA_TOKEN_SYMBOL="TEST_TOKEN"
+$env:VETA_TOKEN_DECIMALS="18"
+npm run veta:m3.5 -- --tx 0xTRANSACTION_HASH
+```
+
+`VETA_RPC_URL` and the transaction hash are external inputs. No private key, signing, or broadcasting is used.
+
+## M4 Tool Reliability
+
+M4 uses the local QVAC endpoint to propose structured tool actions. Only the registered VETA tools can execute, and `APPROVE` requires successful evidence retrieval, transaction retrieval, decoding, and deterministic verification.
+
+```powershell
+npm run veta:m4
+npm run veta:m4:benchmark -- --runs=10
+```
+
+The benchmark records real local-QVAC output validity, tool-chain completion, retries, tool failures, and unsafe approvals. It does not use cloud inference.

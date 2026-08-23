@@ -11,7 +11,10 @@
     "veta:m0": "tsx scripts/m0.ts",
     "veta:m1": "tsx scripts/m1.ts",
     "veta:m2": "tsx scripts/m2.ts",
-    "veta:m3": "tsx scripts/m3.ts"
+    "veta:m3": "tsx scripts/m3.ts",
+    "veta:m3.5": "tsx scripts/m35.ts",
+    "veta:m4": "tsx scripts/m4.ts",
+    "veta:m4:benchmark": "tsx scripts/m4-benchmark.ts"
   },
   "dependencies": {
     "next": "16.3.2",

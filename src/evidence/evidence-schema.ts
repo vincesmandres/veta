@@ -22,6 +22,10 @@ export const evidenceNodeSchema = z.object({
   trustTier: trustTierSchema,
   extraction: extractionStateSchema,
   evidenceText: z.string().trim().min(1).optional(),
+  transactionHash: z.string().trim().min(1).optional(),
+  blockNumber: z.string().trim().min(1).optional(),
+  contractAddress: z.string().trim().min(1).optional(),
+  network: z.string().trim().min(1).optional(),
 }).strict();
 
 export type EvidenceField = z.infer<typeof evidenceFieldSchema>;
